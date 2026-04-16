@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health | UVision</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-page="health">
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">UVision</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#healthNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="healthNav">
+        <ul class="navbar-nav ms-auto gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="tracker.html">Tracker</a></li>
+          <li class="nav-item"><a class="nav-link" href="ai-recommendation.html">AI Recommendation</a></li>
+          <li class="nav-item"><a class="nav-link active" href="health.html">Health</a></li>
+          <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-shell">
+    <div class="container">
+      <div class="page-header">
+        <span class="section-kicker">Health Monitoring</span>
+        <h1 class="mt-3">Track Vitamin D lab values and deficiency status</h1>
+        <p class="section-copy">This page now saves Vitamin D lab values through the backend API and visualizes results over time.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="form-card h-100">
+            <h4>Enter Lab Result</h4>
+            <form class="row g-3 mt-1" id="healthForm">
+              <div class="col-12"><label class="form-label">Test Date</label><input id="labTestDate" type="date" class="form-control" value="2026-04-16"></div>
+              <div class="col-12"><label class="form-label">Vitamin D Value (ng/mL)</label><input id="labVitaminDValue" type="number" class="form-control" value="24"></div>
+              <div class="col-12"><label class="form-label">Doctor Notes</label><textarea id="labNotes" class="form-control" rows="4" placeholder="Optional observation or advice"></textarea></div>
+              <div class="col-12"><button class="btn btn-sun rounded-pill px-4" type="submit">Save Lab Result</button></div>
+            </form>
+            <div id="healthMessage" class="alert d-none mt-3 mb-0"></div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="row g-4">
+            <div class="col-md-4"><div class="metric-card"><div class="metric-label">Latest Value</div><div class="metric-value" id="healthLatestValue">24</div><div class="mini-label">ng/mL</div></div></div>
+            <div class="col-md-4"><div class="metric-card"><div class="metric-label">Status</div><div class="metric-value" id="healthStatusValue">Low</div><div class="mini-label" id="healthStatusNote">Needs improvement</div></div></div>
+            <div class="col-md-4"><div class="metric-card"><div class="metric-label">Target</div><div class="metric-value">30+</div><div class="mini-label">ng/mL</div></div></div>
+            <div class="col-12">
+              <div class="chart-card">
+                <h4>Vitamin D Trend</h4>
+                <div style="height: 320px;" class="mt-3"><canvas id="healthChart"></canvas></div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="table-card">
+                <h4>Lab Result History</h4>
+                <div class="table-responsive mt-3">
+                  <table class="table align-middle">
+                    <thead><tr><th>Date</th><th>Vitamin D</th><th>Notes</th></tr></thead>
+                    <tbody id="healthHistoryTableBody">
+                      <tr><td>2026-04-16</td><td>24 ng/mL</td><td>Demo lab result</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile | UVision</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-page="profile">
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">UVision</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#profileNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="profileNav">
+        <ul class="navbar-nav ms-auto gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="profile.html">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="tracker.html">Tracker</a></li>
+          <li class="nav-item"><a class="nav-link" href="ai-recommendation.html">AI Recommendation</a></li>
+          <li class="nav-item"><a class="nav-link" href="health.html">Health</a></li>
+          <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-shell">
+    <div class="container">
+      <div class="page-header">
+        <span class="section-kicker">User Profile</span>
+        <h1 class="mt-3">Personal details for tailored recommendations</h1>
+        <p class="section-copy">This page now loads and updates user profile data through the backend API when your local server is running.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="status-card h-100">
+            <h4>Profile Summary</h4>
+            <div class="quick-stat mt-3"><div class="mini-label">Name</div><div class="metric-value" id="profileSummaryName" style="font-size: 1.4rem;">Aarav Sharma</div></div>
+            <div class="data-point mt-3"><span>Email</span><strong id="profileSummaryEmail">aarav@example.com</strong></div>
+            <div class="data-point"><span>Age</span><strong id="profileSummaryAge">24</strong></div>
+            <div class="data-point"><span>Skin Type</span><strong id="profileSummarySkinType">Type III</strong></div>
+            <div class="data-point"><span>Lifestyle</span><strong id="profileSummaryLifestyle">Indoor</strong></div>
+            <div class="data-point"><span>Vitamin D Status</span><strong id="profileSummaryStatus">Insufficient</strong></div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="form-card">
+            <h4>Edit Profile</h4>
+            <form class="row g-3 mt-1" id="profileForm">
+              <div class="col-md-6"><label class="form-label">Full Name</label><input id="profileName" type="text" class="form-control" value="Aarav Sharma"></div>
+              <div class="col-md-6"><label class="form-label">Email</label><input id="profileEmail" type="email" class="form-control" value="aarav@example.com"></div>
+              <div class="col-md-4"><label class="form-label">Age</label><input id="profileAge" type="number" class="form-control" value="24"></div>
+              <div class="col-md-4"><label class="form-label">Gender</label><select id="profileGender" class="form-select"><option selected>Male</option><option>Female</option><option>Other</option></select></div>
+              <div class="col-md-4"><label class="form-label">Skin Type</label><select id="profileSkinType" class="form-select"><option>Type I</option><option>Type II</option><option selected>Type III</option><option>Type IV</option><option>Type V</option><option>Type VI</option></select></div>
+              <div class="col-md-6"><label class="form-label">Lifestyle</label><select id="profileLifestyle" class="form-select"><option selected>Indoor</option><option>Outdoor</option></select></div>
+              <div class="col-md-6"><label class="form-label">Latest Vitamin D Level (ng/mL)</label><input id="profileVitaminDLevel" type="number" class="form-control" value="24"></div>
+              <div class="col-12"><label class="form-label">Notes</label><textarea class="form-control" rows="4" placeholder="Medical advice, doctor recommendations, or habits..."></textarea></div>
+              <div class="col-12 d-flex gap-3"><button class="btn btn-sky rounded-pill px-4" type="submit">Save Profile</button><button class="btn btn-outline-secondary rounded-pill px-4" type="reset">Reset</button></div>
+            </form>
+            <div id="profileMessage" class="alert d-none mt-3 mb-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

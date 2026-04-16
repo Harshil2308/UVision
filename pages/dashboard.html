@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | UVision</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-page="dashboard">
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">UVision</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dashboardNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="dashboardNav">
+        <ul class="navbar-nav ms-auto gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="tracker.html">Tracker</a></li>
+          <li class="nav-item"><a class="nav-link" href="ai-recommendation.html">AI Recommendation</a></li>
+          <li class="nav-item"><a class="nav-link" href="health.html">Health</a></li>
+          <li class="nav-item"><a class="nav-link" href="admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dashboard-shell">
+    <div class="container">
+      <div class="page-header">
+        <span class="section-kicker">Main Dashboard</span>
+        <h1 class="mt-3">Real-time UV insights and sunlight recommendations</h1>
+        <p class="section-copy">This page now prefers live backend data and falls back to demo data if the API or database is unavailable.</p>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-6 col-xl-3"><div class="metric-card"><div class="metric-label">Current UV Index</div><div class="metric-value" id="currentUvIndex">--</div></div></div>
+        <div class="col-md-6 col-xl-3"><div class="metric-card"><div class="metric-label">Recommended Exposure</div><div class="metric-value" id="recommendedExposure">--</div></div></div>
+        <div class="col-md-6 col-xl-3"><div class="metric-card"><div class="metric-label">Estimated Vitamin D Today</div><div class="metric-value" id="estimatedVitaminD">--</div></div></div>
+        <div class="col-md-6 col-xl-3">
+          <div class="metric-card">
+            <div class="metric-label">Risk Level</div>
+            <div class="metric-value" id="riskLevelText">--</div>
+            <div class="mt-2"><span class="risk-pill risk-moderate" id="riskBadge">--</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="chart-card h-100">
+            <h4>Live UV Section</h4>
+            <div class="metric-value mt-3" id="liveUvValue">--</div>
+            <div class="mini-label">Updated every 5 seconds</div>
+            <div class="mt-3 data-point"><span>Last updated</span><strong id="dashboardUpdateTime">--</strong></div>
+            <div class="mt-3"><span class="risk-pill risk-moderate" id="liveRiskStatus">Balanced window</span></div>
+            <div class="alert-panel alert-warning-soft mt-4">Low UV means limited vitamin D generation, while high UV may increase skin risk.</div>
+            <div class="alert-panel alert-danger-soft">Use alerts here later for sunscreen reminders and excessive exposure warnings.</div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="chart-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div><h4 class="mb-1">UV vs Time</h4><div class="mini-label">Last 50 readings</div></div>
+              <span class="status-pill risk-low">Auto-refresh ready</span>
+            </div>
+            <div style="height: 320px;"><canvas id="uvChart"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-1">
+        <div class="col-lg-4">
+          <div class="status-card h-100">
+            <h4>Recommendation Summary</h4>
+            <div class="mini-label mt-2" id="activeUserLabel">Showing data for default demo user</div>
+            <div class="data-point mt-3"><span>Best time window</span><strong id="bestTimeWindow">8:30 AM - 10:00 AM</strong></div>
+            <div class="data-point"><span>Recommended duration</span><strong id="recommendationDuration">18 minutes</strong></div>
+            <div class="data-point"><span>Expected Vitamin D</span><strong id="expectedVitaminD">680 IU</strong></div>
+            <div class="data-point"><span>Body area assumption</span><strong id="bodyAreaAssumption">Face + Arms</strong></div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="chart-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div><h4 class="mb-1">Weekly Analytics</h4><div class="mini-label">Vitamin D trend preview</div></div>
+              <span class="status-pill risk-moderate">Chart.js enabled</span>
+            </div>
+            <div style="height: 300px;"><canvas id="weeklyChart"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-1">
+        <div class="col-12">
+          <div class="table-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div><h4 class="mb-1">Exposure History</h4><div class="mini-label">Past manual and auto-estimated sessions</div></div>
+              <button class="btn btn-outline-primary rounded-pill">Export PDF</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-middle">
+                <thead><tr><th>Date</th><th>Start</th><th>End</th><th>Duration</th><th>Body Area</th><th>Sunscreen</th><th>Vitamin D</th></tr></thead>
+                <tbody id="exposureHistoryTableBody">
+                  <tr><td>2026-04-16</td><td>08:40 AM</td><td>08:58 AM</td><td>18 min</td><td>Face + Arms</td><td>No</td><td>680 IU</td></tr>
+                  <tr><td>2026-04-15</td><td>09:00 AM</td><td>09:20 AM</td><td>20 min</td><td>Arms</td><td>Yes</td><td>510 IU</td></tr>
+                  <tr><td>2026-04-14</td><td>08:25 AM</td><td>08:42 AM</td><td>17 min</td><td>Face + Legs</td><td>No</td><td>720 IU</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

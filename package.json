@@ -1,0 +1,27 @@
+{
+  "name": "uvision",
+  "version": "1.0.0",
+  "description": "Sunlight Exposure & Vitamin D Recommendation System backend scaffold",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "uv:simulate": "python python/iot/uv_serial_reader.py --mode simulate --max-reads 5",
+    "ai:test": "python python/ai/recommendation_engine.py"
+  },
+  "keywords": [
+    "vitamin-d",
+    "mysql",
+    "iot",
+    "arduino",
+    "nodejs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "mysql2": "^3.11.3"
+  }
+}

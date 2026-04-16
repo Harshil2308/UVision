@@ -1,0 +1,58 @@
+Sunlight Exposure & Vitamin D Recommendation System
+Progress Tracker
+========================================
+
+Current Phase:
+- Phase 1: Frontend UI scaffold
+- Phase 2: Database design
+- Phase 3: Backend scaffold
+- Phase 4: Frontend-backend integration
+- Phase 5: Extended profile, health, and admin integration
+- Phase 6: Python IoT and AI integration
+
+Completed:
+- Created landing page
+- Created login/signup page
+- Created dashboard page
+- Created profile page
+- Created exposure tracker page
+- Created AI recommendation page
+- Created health page
+- Created admin panel page
+- Created MySQL schema
+- Created MySQL seed data
+- Created database setup guide
+- Updated project docs with local MySQL connection steps
+- Created Node.js backend scaffold
+- Added MySQL connection configuration
+- Added initial API routes for auth, UV, exposure, and recommendations
+- Removed password hashing for the current project stage
+- Added demo login credentials in docs
+- Added backend run guide
+- Connected auth page to backend API
+- Connected dashboard to UV, recommendation, and exposure APIs
+- Connected exposure tracker to backend save/load flow
+- Added health lab results table and seed data
+- Added profile API and frontend integration
+- Added health API and frontend integration
+- Added admin API and frontend integration
+- Added Python UV serial reader with simulation mode
+- Added Python AI recommendation engine
+- Connected backend recommendation routes to Python AI module
+- Added AI recommendation page backend integration
+- Added shared CSS theme
+- Added shared JavaScript for demo live updates and charts
+- Added README.md
+- Added RUNNING_GUIDE.md
+- Added progress tracking file
+
+Pending:
+- Authentication backend
+- Real-time DB-driven dashboard updates
+- PDF report export
+
+Next Step:
+- Run and verify live UV ingestion with MySQL, then polish dashboard real-time behavior
+
+Last Updated:
+- Frontend, database, backend, Python IoT, and AI integration updated on 2026-04-16

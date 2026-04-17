@@ -32,6 +32,8 @@ Included in this phase:
 - Profile, health, and admin pages connected to backend APIs
 - Python UV ingestion scripts
 - Python AI recommendation engine
+- Dataset-based ML model training pipeline
+- Flask ML prediction API
 - Shared styling and JavaScript
 - Progress tracker
 - Detailed run instructions
@@ -42,7 +44,7 @@ Included in this phase:
 - Backend: Node.js
 - Database: MySQL
 - IoT Middleware: Python with `pyserial`
-- AI Module: Python
+- AI Module: Python, scikit-learn, Flask
 
 ## Project Structure
 
@@ -81,7 +83,12 @@ UVision/
 |   |   `-- recommendation_engine.py
 |   |-- iot/
 |   |   `-- uv_serial_reader.py
+|   |-- ml/
+|   |   |-- app.py
+|   |   |-- train_model.py
+|   |   `-- export_india_uv_training_data.py
 |   `-- requirements.txt
+|-- dataset/
 |-- progress.txt
 `-- RUNNING_GUIDE.md
 ```
@@ -153,6 +160,38 @@ The frontend now connects to the backend for:
 
 If the backend is not running, the dashboard falls back to demo values so the UI still loads.
 
+## Dataset-Based ML Model
+
+The project now also includes a dataset-based ML pipeline for UV prediction.
+
+Current ML files:
+
+- [python/ml/train_model.py](</c:/Users/harsh/Desktop/learn code/UVision/python/ml/train_model.py>)
+- [python/ml/app.py](</c:/Users/harsh/Desktop/learn code/UVision/python/ml/app.py>)
+
+Current ML training flow in code:
+
+1. A CSV dataset is prepared and loaded into MySQL
+2. Training data is read from the MySQL table `indianweatherrepository`
+3. Features used for training are:
+   - `temperature_celsius`
+   - `humidity`
+   - `wind_kph`
+   - `pressure_mb`
+   - `cloud`
+   - `feels_like_celsius`
+   - `visibility_km`
+4. Target column is:
+   - `uv_index`
+5. The model is trained using `RandomForestRegressor`
+6. The trained model is saved as `uv_model.pkl`
+7. [python/ml/app.py](</c:/Users/harsh/Desktop/learn code/UVision/python/ml/app.py>) exposes a Flask prediction API
+
+This means the project now supports both:
+
+- rule-based recommendation logic for exposure recommendations
+- dataset-trained ML prediction for UV estimation
+
 ## Demo Login Credentials
 
 After importing `database/seed.sql`, you can use:
@@ -170,4 +209,4 @@ Run and verify the Python-driven live data flow:
 1. Run UV ingestion in simulation mode and confirm DB inserts
 2. Test `POST /api/recommendations/calculate/:userId`
 3. Connect Arduino serial mode on the correct COM port
-4. Add session-based authentication and report export
+4. Connect the trained ML model output with the main application flow

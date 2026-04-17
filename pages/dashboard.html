@@ -49,6 +49,33 @@
         </div>
       </div>
 
+      <div class="row g-4 mb-4">
+        <div class="col-12">
+          <div class="chart-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h4 class="mb-1">ML UV Prediction</h4>
+                <div class="mini-label">Predicted from the latest India weather dataset row using the trained model</div>
+              </div>
+              <span class="status-pill risk-low">Model refresh ready</span>
+            </div>
+            <div class="row g-3 align-items-center">
+              <div class="col-md-4">
+                <div class="metric-card">
+                  <div class="metric-label">Predicted UV Index</div>
+                  <div class="metric-value" id="mlPredictedUv">--</div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="data-point"><span>Prediction source</span><strong id="mlPredictionSource">Waiting for backend</strong></div>
+                <div class="data-point"><span>Dataset timestamp</span><strong id="mlPredictionUpdatedAt">--</strong></div>
+                <div class="mini-label mt-2">This card reflects the trained Flask model, not the live Arduino feed.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row g-4">
         <div class="col-lg-4">
           <div class="chart-card h-100">

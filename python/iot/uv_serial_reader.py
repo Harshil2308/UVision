@@ -31,14 +31,17 @@ def voltage_to_uv_index(voltage: float) -> float:
 
 
 def insert_reading(connection, uv_value: float, uv_index: float) -> None:
-    cursor = connection.cursor()
-    cursor.execute(
-        "INSERT INTO weather_uv_data (uv_value, uv_index, recorded_at) VALUES (%s, %s, NOW())",
-        (uv_value, uv_index),
-    )
-    connection.commit()
-    cursor.close()
-
+    try:
+        cursor = connection.cursor()
+        cursor.execute(
+            "INSERT INTO weather_uv_data (uv_value, uv_index, recorded_at) VALUES (%s, %s, NOW())",
+            (uv_value, uv_index),
+        )
+        connection.commit()
+        print("Inserted:", uv_value, uv_index)
+        cursor.close()
+    except Exception as e:
+        print(" DB insert Error", e)
 
 def connect_db():
     if mysql is None:
@@ -58,7 +61,7 @@ def simulate_loop(interval_seconds: int, max_reads: int | None) -> int:
     count = 0
     try:
         while True:
-            uv_value = round(random.uniform(2.2, 2.9), 3)
+            uv_value = round(random.uniform(0.0, 3.3), 3)
             uv_index = voltage_to_uv_index(uv_value)
             insert_reading(connection, uv_value, uv_index)
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -85,8 +88,12 @@ def serial_loop(port: str, baud_rate: int, interval_seconds: int, max_reads: int
             if not line:
                 continue
             try:
-                uv_value = round(float(line), 3)
-            except ValueError:
+                if "Voltage:" in line:
+                    voltage_part = line.split("Voltage:")[1].strip()
+                    uv_value = round(float(voltage_part), 3)
+                else:
+                    continue
+            except Exception:
                 print(f"[WARN] Skipping invalid sensor value: {line}")
                 continue
 

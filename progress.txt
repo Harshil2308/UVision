@@ -9,6 +9,7 @@ Current Phase:
 - Phase 4: Frontend-backend integration
 - Phase 5: Extended profile, health, and admin integration
 - Phase 6: Python IoT and AI integration
+- Phase 7: Dataset-based ML model training
 
 Completed:
 - Created landing page
@@ -40,6 +41,11 @@ Completed:
 - Added Python AI recommendation engine
 - Connected backend recommendation routes to Python AI module
 - Added AI recommendation page backend integration
+- Added dataset-based ML training pipeline
+- Added dataset import and database-backed training flow
+- Added RandomForestRegressor training script
+- Added Flask prediction API for trained UV model
+- Added documentation for dataset-trained UV prediction model
 - Added shared CSS theme
 - Added shared JavaScript for demo live updates and charts
 - Added README.md
@@ -49,10 +55,11 @@ Completed:
 Pending:
 - Authentication backend
 - Real-time DB-driven dashboard updates
+- Trained model integration with the main backend flow
 - PDF report export
 
 Next Step:
-- Run and verify live UV ingestion with MySQL, then polish dashboard real-time behavior
+- Integrate the trained ML model with the main application recommendation flow
 
 Last Updated:
-- Frontend, database, backend, Python IoT, and AI integration updated on 2026-04-16
+- Frontend, database, backend, IoT, AI, and dataset-based ML training updated on 2026-04-17

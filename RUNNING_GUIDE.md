@@ -9,6 +9,7 @@ It is written for the current project state:
 - MySQL is connected
 - Python AI logic is added
 - Python UV ingestion is added
+- Dataset-based ML training is added
 - Arduino support is prepared
 
 Follow the steps in order.
@@ -22,6 +23,8 @@ Right now, this project can do all of the following:
 - Connect the backend to MySQL
 - Read and write app data from MySQL
 - Run AI recommendation logic through Python
+- Train an ML model using stored dataset data
+- Run a Flask model prediction API
 - Insert UV readings through Python simulation mode
 - Support real Arduino USB serial input when you are ready
 
@@ -147,6 +150,13 @@ This installs:
 
 - `mysql-connector-python`
 - `pyserial`
+
+For ML training and inference you will also need:
+
+- `pandas`
+- `scikit-learn`
+- `joblib`
+- `flask`
 
 These are needed for:
 
@@ -376,7 +386,82 @@ POST http://localhost:4000/api/recommendations/calculate/1
 POST http://localhost:4000/api/admin/recalculate
 ```
 
-## 16. Run Python UV Ingestion Without Arduino
+## 16. Dataset-Based ML Model Training
+
+The project now includes a separate ML flow in:
+
+- [python/ml/train_model.py](</c:/Users/harsh/Desktop/learn code/UVision/python/ml/train_model.py>)
+- [python/ml/app.py](</c:/Users/harsh/Desktop/learn code/UVision/python/ml/app.py>)
+
+Current code behavior:
+
+1. A dataset CSV is loaded into MySQL
+2. Training script reads from the MySQL table:
+   - `indianweatherrepository`
+3. The target column is:
+   - `uv_index`
+4. The model uses these feature columns:
+   - `temperature_celsius`
+   - `humidity`
+   - `wind_kph`
+   - `pressure_mb`
+   - `cloud`
+   - `feels_like_celsius`
+   - `visibility_km`
+5. Model used:
+   - `RandomForestRegressor`
+6. Saved model file:
+   - `uv_model.pkl`
+7. The trained model is served through Flask for prediction requests
+
+### How To Train The ML Model
+
+After your dataset is loaded into MySQL table `indianweatherrepository`, run:
+
+```powershell
+python python/ml/train_model.py
+```
+
+Expected result:
+
+- model training completes
+- R2 Score and MAE are printed
+- `uv_model.pkl` is created
+- the model is now ready for Flask prediction testing
+
+### How To Run The Flask ML Prediction API
+
+Run:
+
+```powershell
+python python/ml/app.py
+```
+
+Expected result:
+
+- Flask server starts on port `5000`
+
+Then test:
+
+```text
+http://localhost:5000/
+```
+
+You can also connect this Flask API later with the main application if you want dataset-trained prediction to power the recommendation flow.
+
+### Current ML Prediction Input Fields
+
+The Flask prediction API expects JSON with:
+
+- `temperature`
+- `humidity`
+- `wind_kph`
+- `pressure`
+- `cloud`
+- `feels_like`
+- `visibility`
+
+## 17. Run Python UV Ingestion Without Arduino
 
 Before using real hardware, test the UV pipeline in simulation mode.
 
@@ -400,7 +485,7 @@ Expected result:
 
 This is the safest first test before connecting Arduino.
 
-## 17. When To Connect Arduino To Your Laptop
+## 18. When To Connect Arduino To Your Laptop
 
 Connect the Arduino only when all of these are already working:
 
@@ -413,7 +498,7 @@ Do not connect Arduino as your first test.
 
 First confirm the software stack works without hardware.
 
-## 18. What To Do Right Before Connecting Arduino
+## 19. What To Do Right Before Connecting Arduino
 
 Before plugging in Arduino:
 
@@ -433,7 +518,7 @@ If your Arduino uses another COM port, update:
 
 or pass it directly in the command later.
 
-## 19. How To Test Arduino With Serial Monitor First
+## 20. How To Test Arduino With Serial Monitor First
 
 After plugging Arduino into the laptop:
 
@@ -451,7 +536,7 @@ Expected result:
 If you do not see values here, do not continue to the Python serial reader yet.
 Fix the Arduino sketch or wiring first.
 
-## 20. Important: Close Serial Monitor Before Running Python Serial Reader
+## 21. Important: Close Serial Monitor Before Running Python Serial Reader
 
 Only one program can use the COM port at a time.
 
@@ -467,7 +552,7 @@ So the order is:
 3. Close Serial Monitor
 4. Run Python serial reader
 
-## 21. How To Run Real Arduino UV Ingestion
+## 22. How To Run Real Arduino UV Ingestion
 
 Once Arduino is plugged in, sketch uploaded, and Serial Monitor test passed:
 
@@ -486,7 +571,7 @@ Expected result:
 - `/api/uv/latest` updates
 - dashboard live UV updates
 
-## 22. What To Check If Arduino Serial Mode Fails
+## 23. What To Check If Arduino Serial Mode Fails
 
 If serial mode does not work, check these one by one:
 
@@ -498,7 +583,7 @@ If serial mode does not work, check these one by one:
 6. UV sensor values are actually being printed by the sketch
 7. `pyserial` is installed
 
-## 23. Recommended Full Test Order Right Now
+## 24. Recommended Full Test Order Right Now
 
 This is the best exact order for you to follow now:
 
@@ -515,15 +600,18 @@ This is the best exact order for you to follow now:
 11. Open `http://localhost:5500/pages/auth.html`
 12. Log in with a demo user
 13. Test dashboard, tracker, health, profile, admin, and AI pages
-14. Run UV simulation mode
-15. Confirm UV data updates in API and dashboard
-16. Only then plug in Arduino
-17. Upload Arduino sketch
-18. Check Serial Monitor
-19. Close Serial Monitor
-20. Run real serial ingestion
+14. Load dataset into MySQL table `indianweatherrepository`
+15. Train the ML model with `python python/ml/train_model.py`
+16. Run Flask ML API if you want model-based prediction testing
+17. Run UV simulation mode
+18. Confirm UV data updates in API and dashboard
+19. Only then plug in Arduino
+20. Upload Arduino sketch
+21. Check Serial Monitor
+22. Close Serial Monitor
+23. Run real serial ingestion
 
-## 24. Files Most Important Right Now
+## 25. Files Most Important Right Now
 
 These are the files you are most likely to use at this stage:
 
@@ -533,11 +621,13 @@ These are the files you are most likely to use at this stage:
 - [backend/src/config/db.js](</c:/Users/harsh/Desktop/learn code/UVision/backend/src/config/db.js>)
 - [python/iot/uv_serial_reader.py](</c:/Users/harsh/Desktop/learn code/UVision/python/iot/uv_serial_reader.py>)
 - [python/ai/recommendation_engine.py](</c:/Users/harsh/Desktop/learn code/UVision/python/ai/recommendation_engine.py>)
+- [python/ml/train_model.py](</c:/Users/harsh/Desktop/learn code/UVision/python/ml/train_model.py>)
+- [python/ml/app.py](</c:/Users/harsh/Desktop/learn code/UVision/python/ml/app.py>)
 - [database/schema.sql](</c:/Users/harsh/Desktop/learn code/UVision/database/schema.sql>)
 - [database/seed.sql](</c:/Users/harsh/Desktop/learn code/UVision/database/seed.sql>)
 - [.env](</c:/Users/harsh/Desktop/learn code/UVision/.env>)
 
-## 25. Current Known Good State
+## 26. Current Known Good State
 
 The current verified working flow is:
 
@@ -546,12 +636,13 @@ The current verified working flow is:
 - profile, health, admin, dashboard, tracker, and AI pages use backend APIs
 - AI recalculation works through Python
 - UV simulation mode inserts readings into MySQL
+- dataset-based ML training files are present in the project
 
 The only major step left for live hardware validation is:
 
 - real Arduino serial input over USB
 
-## 26. Important Notes
+## 27. Important Notes
 
 - Passwords are currently stored as plain text for this project stage
 - UV simulation mode is the best first test

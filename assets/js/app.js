@@ -169,13 +169,15 @@ async function initDashboard(state) {
   }
 
   renderDashboardFallback(state);
+  renderMlPredictionFallback();
 
   try {
-    const [latestUv, uvHistory, recommendation, exposureLogs] = await Promise.all([
+    const [latestUv, uvHistory, recommendation, exposureLogs, mlPrediction] = await Promise.all([
       apiRequest('/uv/latest'),
       apiRequest('/uv/history?limit=50'),
       apiRequest(`/recommendations/latest/${userId}`),
-      apiRequest(`/exposure?userId=${userId}`)
+      apiRequest(`/exposure?userId=${userId}`),
+      apiRequest('/predict/latest')
     ]);
 
     if (latestUv?.data) {
@@ -215,6 +217,10 @@ async function initDashboard(state) {
       renderWeeklyChartFromExposure(exposureLogs.data, state);
     }
 
+    if (mlPrediction?.data) {
+      updateMlPredictionCard(mlPrediction.data);
+    }
+
     setText('bodyAreaAssumption', 'Based on saved exposure logs');
   } catch (error) {
     console.warn('Dashboard fallback mode active:', error.message);
@@ -222,13 +228,21 @@ async function initDashboard(state) {
 
   setInterval(async () => {
     try {
-      const latestUv = await apiRequest('/uv/latest');
+      const [latestUv, mlPrediction] = await Promise.all([
+        apiRequest('/uv/latest'),
+        apiRequest('/predict/latest')
+      ]);
+
       if (latestUv?.data) {
         const uvIndex = Number(latestUv.data.uv_index);
         setText('liveUvValue', uvIndex.toFixed(1));
         setText('currentUvIndex', uvIndex.toFixed(1));
         setText('dashboardUpdateTime', new Date(latestUv.data.recorded_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
         updateRiskDisplay(uvIndex);
+      }
+
+      if (mlPrediction?.data) {
+        updateMlPredictionCard(mlPrediction.data);
       }
     } catch (error) {
       console.warn('Live UV refresh failed:', error.message);
@@ -607,6 +621,21 @@ function renderDashboardFallback(state) {
   updateRiskBadge(state.riskLevel);
   renderLineChart('uvChart', state.times, state.uvSeries, 'UV Index', '#f7b500', 'rgba(247,181,0,0.18)');
   renderBarChart('weeklyChart', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], state.vitaminSeries, 'Vitamin D (IU)', '#0f6cbd');
+}
+
+function renderMlPredictionFallback() {
+  setText('mlPredictedUv', '--');
+  setText('mlPredictionSource', 'ML service not loaded yet');
+  setText('mlPredictionUpdatedAt', '--');
+}
+
+function updateMlPredictionCard(data) {
+  const predictedUv = Number(data.uv_prediction);
+  const source = [data.location_name, data.region].filter(Boolean).join(', ');
+
+  setText('mlPredictedUv', Number.isFinite(predictedUv) ? predictedUv.toFixed(2) : '--');
+  setText('mlPredictionSource', source || 'India weather dataset');
+  setText('mlPredictionUpdatedAt', data.last_updated ? formatDateTime(data.last_updated) : '--');
 }
 
 function renderExposureHistory(rows) {

@@ -4,12 +4,11 @@ import sys
 
 
 SKIN_FACTORS = {
-    "Type I": 1.25,
-    "Type II": 1.15,
-    "Type III": 1.00,
-    "Type IV": 0.90,
-    "Type V": 0.80,
-    "Type VI": 0.70,
+    "Sensitive": 1.20,
+    "Combination": 1.10,
+    "Normal": 1.00,
+    "Oily": 0.90,
+    "Dry": 0.95,
 }
 
 LIFESTYLE_FACTORS = {
@@ -50,7 +49,7 @@ def main() -> int:
     payload = json.loads(raw) if raw else {}
 
     uv_index = float(payload.get("uv_index", 5.0))
-    skin_type = payload.get("skin_type", "Type III")
+    skin_type = payload.get("skin_type", "Normal")
     lifestyle = payload.get("lifestyle", "Indoor")
     requested_duration = payload.get("exposure_duration")
 

@@ -395,7 +395,7 @@ The project now includes a separate ML flow in:
 
 Current code behavior:
 
-1. A dataset CSV is loaded into MySQL
+1. A dataset is loaded into MySQL
 2. Training script reads from the MySQL table:
    - `indianweatherrepository`
 3. The target column is:
@@ -412,7 +412,6 @@ Current code behavior:
    - `RandomForestRegressor`
 6. Saved model file:
    - `uv_model.pkl`
-7. The trained model is served through Flask for prediction requests
 
 ### How To Train The ML Model
 
@@ -427,7 +426,6 @@ Expected result:
 - model training completes
 - R2 Score and MAE are printed
 - `uv_model.pkl` is created
-- the model is now ready for Flask prediction testing
 
 ### How To Run The Flask ML Prediction API
 
@@ -446,8 +444,6 @@ Then test:
 ```text
 http://localhost:5000/
 ```
-
-You can also connect this Flask API later with the main application if you want dataset-trained prediction to power the recommendation flow.
 
 ### Current ML Prediction Input Fields
 

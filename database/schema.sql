@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL,
   age TINYINT UNSIGNED NOT NULL,
   gender ENUM('Male', 'Female', 'Other') NOT NULL,
-  skin_type ENUM('Type I', 'Type II', 'Type III', 'Type IV', 'Type V', 'Type VI') NOT NULL,
+  skin_type ENUM('Sensitive', 'Combination', 'Normal', 'Oily', 'Dry') NOT NULL,
   lifestyle ENUM('Indoor', 'Outdoor') NOT NULL,
   vitamin_d_level DECIMAL(5,2) DEFAULT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

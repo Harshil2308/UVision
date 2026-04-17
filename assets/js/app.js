@@ -332,7 +332,7 @@ async function initProfilePage() {
       email: document.getElementById('profileEmail').value.trim(),
       age: Number(document.getElementById('profileAge').value),
       gender: document.getElementById('profileGender').value,
-      skin_type: document.getElementById('profileSkinType').value,
+      skin_type: normalizeSkinType(document.getElementById('profileSkinType').value),
       lifestyle: document.getElementById('profileLifestyle').value,
       vitamin_d_level: Number(document.getElementById('profileVitaminDLevel').value || 0)
     };
@@ -382,7 +382,13 @@ async function initAiPage() {
     const uv = Number(document.getElementById('inputUv').value);
     const duration = Number(document.getElementById('inputDuration').value);
     const skinType = document.getElementById('inputSkin').value.trim();
-    const factorMap = { I: 1.25, II: 1.15, III: 1.0, IV: 0.9, V: 0.8, VI: 0.7 };
+    const factorMap = {
+      Sensitive: 1.2,
+      Combination: 1.1,
+      Normal: 1.0,
+      Oily: 0.9,
+      Dry: 0.95
+    };
 
     try {
       const profile = await apiRequest(`/users/${userId}`);
@@ -534,10 +540,11 @@ async function loadProfileData(userId) {
     }
 
     const user = response.data;
+    const normalizedSkinType = normalizeSkinType(user.skin_type);
     setText('profileSummaryName', user.name);
     setText('profileSummaryEmail', user.email);
     setText('profileSummaryAge', String(user.age));
-    setText('profileSummarySkinType', user.skin_type);
+    setText('profileSummarySkinType', normalizedSkinType);
     setText('profileSummaryLifestyle', user.lifestyle);
     setText('profileSummaryStatus', getVitaminStatusLabel(user.vitamin_d_level));
 
@@ -545,7 +552,7 @@ async function loadProfileData(userId) {
     setInputValue('profileEmail', user.email);
     setInputValue('profileAge', user.age);
     setInputValue('profileGender', user.gender);
-    setInputValue('profileSkinType', user.skin_type);
+    setInputValue('profileSkinType', normalizedSkinType);
     setInputValue('profileLifestyle', user.lifestyle);
     setInputValue('profileVitaminDLevel', user.vitamin_d_level || '');
   } catch (error) {
@@ -953,6 +960,19 @@ function renderBarChart(canvasId, labels, data, label, backgroundColor) {
       }
     }
   });
+}
+
+function normalizeSkinType(value) {
+  const mapping = {
+    'Type I': 'Sensitive',
+    'Type II': 'Combination',
+    'Type III': 'Normal',
+    'Type IV': 'Oily',
+    'Type V': 'Dry',
+    'Type VI': 'Dry'
+  };
+
+  return mapping[value] || value || 'Normal';
 }
 
 function setText(id, value) {

@@ -2,9 +2,9 @@ USE uvision_db;
 
 INSERT INTO users (name, email, password, age, gender, skin_type, lifestyle, vitamin_d_level)
 VALUES
-  ('Aarav Sharma', 'aarav@example.com', 'Aarav@123', 24, 'Male', 'Type III', 'Indoor', 24.00),
-  ('Neha Gupta', 'neha@example.com', 'Neha@123', 29, 'Female', 'Type II', 'Outdoor', 33.50),
-  ('Rohan Das', 'rohan@example.com', 'Rohan@123', 31, 'Male', 'Type V', 'Indoor', 18.20);
+  ('Aarav Sharma', 'aarav@example.com', 'Aarav@123', 24, 'Male', 'Normal', 'Indoor', 24.00),
+  ('Neha Gupta', 'neha@example.com', 'Neha@123', 29, 'Female', 'Sensitive', 'Outdoor', 33.50),
+  ('Rohan Das', 'rohan@example.com', 'Rohan@123', 31, 'Male', 'Oily', 'Indoor', 18.20);
 
 INSERT INTO weather_uv_data (uv_value, uv_index, recorded_at)
 VALUES
